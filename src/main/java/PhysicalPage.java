@@ -2,8 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhysicalPage {
-    int pageNum;
-    boolean isEmpty;
+    private int pageNum;
+    private boolean isEmpty;
+    private long virtualTime;
 
     private PhysicalPage(int pageNum) {
         this.pageNum = pageNum;
@@ -16,5 +17,17 @@ public class PhysicalPage {
             pageTable.add(new PhysicalPage(i));
         }
         return pageTable;
+    }
+
+    public long getVirtualTime() {
+        return virtualTime;
+    }
+
+    public void setVirtualTime(long virtualTime) {
+        this.virtualTime = virtualTime;
+    }
+
+    public int getPageNum() {
+        return pageNum;
     }
 }

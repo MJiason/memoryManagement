@@ -5,20 +5,18 @@ public class VirtualPage {
     private boolean P;
     private boolean R;
     private boolean M;
-    private long virtualTime = 0;
     private int physicalPageNum;
 
 
-    public VirtualPage(boolean r, long virtualTime, int physicalPageNum) {
+    public VirtualPage(boolean r, int physicalPageNum) {
         R = r;
-        this.virtualTime = virtualTime;
         this.physicalPageNum = physicalPageNum;
     }
 
     public static List<VirtualPage> initWorkingSet(int size) {
         List<VirtualPage> virtualPages = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            virtualPages.add(new VirtualPage(true, System.currentTimeMillis(), i));
+            virtualPages.add(new VirtualPage(true, i));
         }
         return virtualPages;
     }
@@ -47,19 +45,11 @@ public class VirtualPage {
         M = m;
     }
 
-    public long getVirtualTime() {
-        return virtualTime;
-    }
-
-    public void setVirtualTime(long virtualTime) {
-        this.virtualTime = virtualTime;
-    }
-
     @Override
     public String toString() {
         return "VirtualPage{" +
-                "R=" + R +
-                ", virtualTime=" + virtualTime +
+                "P=" + P +
+                ", R=" + R +
                 ", physicalPageNum=" + physicalPageNum +
                 '}';
     }

@@ -12,9 +12,9 @@ public class WsClockPageReplacement implements PageReplacement {
     }
 
     @Override
-    public void replacePage(List<VirtualPage> workSet, int maxSize, int pageNum) {
+    public void replacePage(List<VirtualPage> workSet, int maxSize, PhysicalPage physicalPage) {
         if (workSet.size() < maxSize) {
-            workSet.add(new VirtualPage(true, System.currentTimeMillis(), pageNum));
+            workSet.add(new VirtualPage(true, physicalPage.getPageNum()));
         }
 
         for (int i = currPage; i < workSet.size(); i++) {
@@ -23,9 +23,10 @@ public class WsClockPageReplacement implements PageReplacement {
                 page.setR(false);
                 continue;
             }
-            if (!page.isR() && page.getVirtualTime() < System.currentTimeMillis()) {
+            if (!page.isR()) {
                 System.out.println("virtual page replaced " + page);
-                page = new VirtualPage(true, System.currentTimeMillis(), pageNum);
+                page = new VirtualPage(true, physicalPage.getPageNum());
+                physicalPage.setVirtualTime(System.currentTimeMillis());
                 System.out.println("new page " + page);
                 return;
             }
@@ -42,7 +43,6 @@ public class WsClockPageReplacement implements PageReplacement {
         }
         VirtualPage currPage =  workingSet.get(pageNum);
         System.out.println(currPage);
-        currPage.setVirtualTime(System.currentTimeMillis());
         currPage.setR(true);
     }
 }

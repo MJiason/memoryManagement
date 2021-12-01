@@ -10,10 +10,10 @@ public class Process extends Thread {
     private volatile boolean executeAllowed;
     private int virtualMemory;
     private final int CALL_TO_WORKING_SET_PROBABILITY = 90;
-    private final Random random = new Random();
     private List<VirtualPage> workingSet = new ArrayList<>(virtualMemory);
     private final PageReplacement pageReplacement = WsClockPageReplacement.getInstance();
     private List<PhysicalPage> physicalPages;
+    private final ThreadLocalRandom random = ThreadLocalRandom.current();
 
 
     public Process(String name, int sizeOfMemory, List<PhysicalPage> physicalPages) {
@@ -33,7 +33,7 @@ public class Process extends Thread {
             pageReplacement.readPage(workingSet, ThreadLocalRandom.current().nextInt(workingSet.size()));
         } else {
             System.out.println("Page from table, replacing");
-            pageReplacement.replacePage(workingSet, virtualMemory, ThreadLocalRandom.current().nextInt(pageTable.size()));
+            pageReplacement.replacePage(workingSet, virtualMemory, pageTable.get(random.nextInt(pageTable.size())));
         }
         return;
     }
